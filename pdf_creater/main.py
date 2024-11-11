@@ -1,7 +1,7 @@
 
 from pdf_generator import generate_ocr
 import json 
-maps_vins = generate_ocr(10,"examples","output.pdf")
+maps_vins = generate_ocr(50,"examples","output.pdf")
 
 check_gen = set()
 for v in maps_vins.values():

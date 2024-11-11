@@ -82,9 +82,18 @@ def concatenate_pdfs(path_in, path_out):
     with open(path_out, "wb") as output_file:
         pdf_writer.write(output_file)
 
+
+def clean(path_in):
+    for pdf_file in os.listdir(path_in):
+        os.remove(f'{path_in}/{pdf_file}')
+    os.rmdir(path_in)
+
+
 def generate_ocr(count, path_in, path_out):
     pdf_ids_vins_map = dict()
     pages =[]
+    clean(path_in)
+    os.mkdir(path_in)
     for id_pdf in range(count):
         pdf = PDFGenerator(f"{path_in}/page{id_pdf}.pdf")
         pdf.add_text("ITMO HTR", 20, 820, font="Helvetica", size=18)
@@ -102,4 +111,6 @@ def generate_ocr(count, path_in, path_out):
         pdf.save()
         pdf_ids_vins_map[id_pdf] = vins
     concatenate_pdfs(path_in, path_out)
+    clean(path_in)
+
     return pdf_ids_vins_map
