@@ -63,6 +63,9 @@ async def main():
     # Create the application
     application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 
+    # Initialize the application explicitly
+    await application.initialize()  # Explicit initialization step
+
     # Handlers
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.PHOTO, handle_photo))
