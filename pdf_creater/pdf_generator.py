@@ -26,7 +26,7 @@ class PDFGenerator:
     def add_text_list(self):
         texts = [
             "Здравствуйте, студенты!",
-            "Помогите нашему проекту по HTR.",
+            "Помогите нашему проекту по Handwritten Text Recognition(распознавание рукописных текстов).",
             "Вам предложена случайная последовательность символов",
             "и области для заполнения рукописным текстом.",
             "Что нужно сделать:",
@@ -37,7 +37,7 @@ class PDFGenerator:
             "Спасибо за помощь!"
         ]
         for i,text in enumerate(texts):
-            self.add_text(text, 20, 810-i*10, font="FreeSans", size=10)
+            self.add_text(text, 20, 800-i*10, font="FreeSans", size=10)
 
 
 
@@ -98,18 +98,46 @@ def generate_ocr(count, path_in, path_out):
     os.mkdir(path_in)
     for id_pdf in range(count):
         pdf = PDFGenerator(f"{path_in}/page{id_pdf}.pdf")
-        pdf.add_text("ITMO HTR", 20, 820, font="Helvetica", size=18)
-        pdf.add_text(str(id_pdf), 400, 820, font="Helvetica", size=18)
+        pdf.add_text("ITMO HTR", 20, 810, font="Helvetica", size=18)
+        pdf.add_text(str(id_pdf), 400, 810, font="Helvetica", size=18)
         pdf.add_text_list()
-        pdf.add_qrcode("https://t.me/itmo_htr_bot", 500, 760, size=80)
-        start_pos = 710
+        pdf.add_qrcode("https://t.me/itmo_htr_bot", 500, 750, size=80)
+        start_pos = 690
         wight = 400
         shift = 40
-        vins = gen_vin(18)
+        vins = gen_vin(17)
         for i,vin in enumerate(vins):
             for j,a in enumerate(vin):
-                pdf.add_text(a, 27+wight/17*j, start_pos-i*shift, font="FreeSans", size=10)
+                pdf.add_text(a, 27+wight/17*j, start_pos-i*shift+3, font="FreeSans", size=10)
                 pdf.add_square(20+wight/17*j, start_pos-25-i*shift, wight/17, color=colors.black, fill=False)
+        pdf.save()
+        pdf_ids_vins_map[id_pdf] = vins
+    concatenate_pdfs(path_in, path_out)
+    clean(path_in)
+
+    return pdf_ids_vins_map
+
+
+
+def generate_ocr_v2(count, path_in, path_out):
+    pdf_ids_vins_map = dict()
+    pages =[]
+    clean(path_in)
+    os.mkdir(path_in)
+    for id_pdf in range(count):
+        pdf = PDFGenerator(f"{path_in}/page{id_pdf}.pdf")
+        pdf.add_text("ITMO HTR", 20, 810, font="Helvetica", size=18)
+        pdf.add_text(str(id_pdf), 400, 810, font="Helvetica", size=18)
+        pdf.add_text_list()
+        pdf.add_qrcode("https://t.me/itmo_htr_bot", 500, 750, size=80)
+        start_pos = 680
+        wight = 400
+        shift = 40
+        vins = gen_vin(17)
+        for i,vin in enumerate(vins):
+            pdf.add_text(vin, 40+wight, start_pos-i*shift+3, font="FreeSans", size=10)
+            for j in range(17):
+                pdf.add_square(20+wight/17*j, start_pos-i*shift, wight/17, color=colors.black, fill=False)
         pdf.save()
         pdf_ids_vins_map[id_pdf] = vins
     concatenate_pdfs(path_in, path_out)
