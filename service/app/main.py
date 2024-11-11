@@ -64,15 +64,19 @@ async def main():
     application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 
     # Initialize the application explicitly
-    await application.initialize()  # Explicit initialization step
+    try:
+        await application.initialize()
+        # Handlers
+        application.add_handler(CommandHandler("start", start))
+        application.add_handler(MessageHandler(filters.PHOTO, handle_photo))
 
-    # Handlers
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(MessageHandler(filters.PHOTO, handle_photo))
-
-    # Start the bot
-    await application.start()
-    await application.idle()
-
+        # Start the bot
+        await application.start()
+        await application.idle()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        await application.shutdown()
+    
 if __name__ == "__main__":
     asyncio.run(main())
