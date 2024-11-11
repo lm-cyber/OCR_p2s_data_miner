@@ -1,1 +1,5 @@
 venv/
+*.pdf
+examples/
+output.json
+__pycache__/
