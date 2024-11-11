@@ -84,6 +84,8 @@ def concatenate_pdfs(path_in, path_out):
 
 
 def clean(path_in):
+    if not os.path.exists(path_in):
+        return
     for pdf_file in os.listdir(path_in):
         os.remove(f'{path_in}/{pdf_file}')
     os.rmdir(path_in)
