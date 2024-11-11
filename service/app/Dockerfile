@@ -5,7 +5,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy the bot script to the container
-COPY telegram_image_bot.py .
+COPY app/telegram_image_bot.py .
 
 # Install dependencies
 RUN pip install python-telegram-bot
