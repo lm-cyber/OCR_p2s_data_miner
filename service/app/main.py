@@ -1,7 +1,7 @@
 import os
 import asyncio
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from aiobotocore.session import get_session
 from botocore.exceptions import ClientError
 
