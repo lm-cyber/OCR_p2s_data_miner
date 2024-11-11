@@ -59,24 +59,18 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("Failed to upload image.")
             print(f"An error occurred: {e}")
 
-async def main():
+def main():
     # Create the application
-    application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
-
+    application = Application.builder().token(TELEGRAM_TOKEN).build()
     # Initialize the application explicitly
-    try:
-        await application.initialize()
-        # Handlers
-        application.add_handler(CommandHandler("start", start))
-        application.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+    # try:
+    #     await application.initialize()
+    #     # Handlers
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(MessageHandler(filters.PHOTO, handle_photo))
 
         # Start the bot
-        await application.start()
-        await application.idle()
-    except Exception as e:
-        print(f"An error occurred: {e}")
-    finally:
-        await application.shutdown()
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
     
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
