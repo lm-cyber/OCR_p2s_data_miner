@@ -1,11 +1,9 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  web:
-    build: ./app
-    container_name: fastapi_app
-    ports:
-      - "8000:8000"
+  telegram_bot:
+    build: .
+    volumes:
+      - ./images:/app/images  # Bind mount for saving images
     env_file: 
       - .env
-
